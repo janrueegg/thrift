@@ -18,7 +18,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-from __future__ import division
+
 import sys, glob, time
 sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
 from optparse import OptionParser
@@ -63,46 +63,46 @@ class TestHandler:
 
   def testVoid(self):
     if options.verbose > 1:
-      print 'testVoid()'
+      print('testVoid()')
 
   def testString(self, str):
     if options.verbose > 1:
-      print 'testString(%s)' % str
+      print('testString(%s)' % str)
     return str
 
   def testByte(self, byte):
     if options.verbose > 1:
-      print 'testByte(%d)' % byte
+      print('testByte(%d)' % byte)
     return byte
 
   def testI16(self, i16):
     if options.verbose > 1:
-      print 'testI16(%d)' % i16
+      print('testI16(%d)' % i16)
     return i16
 
   def testI32(self, i32):
     if options.verbose > 1:
-      print 'testI32(%d)' % i32
+      print('testI32(%d)' % i32)
     return i32
 
   def testI64(self, i64):
     if options.verbose > 1:
-      print 'testI64(%d)' % i64
+      print('testI64(%d)' % i64)
     return i64
 
   def testDouble(self, dub):
     if options.verbose > 1:
-      print 'testDouble(%f)' % dub
+      print('testDouble(%f)' % dub)
     return dub
 
   def testStruct(self, thing):
     if options.verbose > 1:
-      print 'testStruct({%s, %d, %d, %d})' % (thing.string_thing, thing.byte_thing, thing.i32_thing, thing.i64_thing)
+      print('testStruct({%s, %d, %d, %d})' % (thing.string_thing, thing.byte_thing, thing.i32_thing, thing.i64_thing))
     return thing
 
   def testException(self, str):
     if options.verbose > 1:
-      print 'testException(%s)' % str
+      print('testException(%s)' % str)
     if str == 'Xception':
       x = Xception()
       x.errorCode = 1001
@@ -113,49 +113,49 @@ class TestHandler:
 
   def testOneway(self, seconds):
     if options.verbose > 1:
-      print 'testOneway(%d) => sleeping...' % seconds
+      print('testOneway(%d) => sleeping...' % seconds)
     time.sleep(seconds / 3) # be quick
     if options.verbose > 1:
-      print 'done sleeping'
+      print('done sleeping')
 
   def testNest(self, thing):
     if options.verbose > 1:
-      print 'testNest(%s)' % thing
+      print('testNest(%s)' % thing)
     return thing
 
   def testMap(self, thing):
     if options.verbose > 1:
-      print 'testMap(%s)' % thing
+      print('testMap(%s)' % thing)
     return thing
 
   def testSet(self, thing):
     if options.verbose > 1:
-      print 'testSet(%s)' % thing
+      print('testSet(%s)' % thing)
     return thing
 
   def testList(self, thing):
     if options.verbose > 1:
-      print 'testList(%s)' % thing
+      print('testList(%s)' % thing)
     return thing
 
   def testEnum(self, thing):
     if options.verbose > 1:
-      print 'testEnum(%s)' % thing
+      print('testEnum(%s)' % thing)
     return thing
 
   def testTypedef(self, thing):
     if options.verbose > 1:
-      print 'testTypedef(%s)' % thing
+      print('testTypedef(%s)' % thing)
     return thing
 
   def testMapMap(self, thing):
     if options.verbose > 1:
-      print 'testMapMap(%s)' % thing
+      print('testMapMap(%s)' % thing)
     return thing
 
   def testMulti(self, arg0, arg1, arg2, arg3, arg4, arg5):
     if options.verbose > 1:
-      print 'testMulti(%s)' % [arg0, arg1, arg2, arg3, arg4, arg5]
+      print('testMulti(%s)' % [arg0, arg1, arg2, arg3, arg4, arg5])
     x = Xtruct(byte_thing=arg0, i32_thing=arg1, i64_thing=arg2)
     return x
 
@@ -206,10 +206,10 @@ elif server_type == "TProcessPoolServer":
     def clean_shutdown(signum, frame):
       for worker in server.workers:
         if options.verbose > 0:
-          print 'Terminating worker: %s' % worker
+          print('Terminating worker: %s' % worker)
         worker.terminate()
       if options.verbose > 0:
-        print 'Requesting server to stop()'
+        print('Requesting server to stop()')
       try:
         server.stop()
       except:

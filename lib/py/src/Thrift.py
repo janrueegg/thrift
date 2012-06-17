@@ -110,17 +110,17 @@ class TApplicationException(TException):
     if self.message:
       return self.message
     elif self.type == self.UNKNOWN_METHOD:
-      return 'Unknown method'
+      return b'Unknown method'
     elif self.type == self.INVALID_MESSAGE_TYPE:
-      return 'Invalid message type'
+      return b'Invalid message type'
     elif self.type == self.WRONG_METHOD_NAME:
-      return 'Wrong method name'
+      return b'Wrong method name'
     elif self.type == self.BAD_SEQUENCE_ID:
-      return 'Bad sequence ID'
+      return b'Bad sequence ID'
     elif self.type == self.MISSING_RESULT:
-      return 'Missing result'
+      return b'Missing result'
     else:
-      return 'Default (unknown) TApplicationException'
+      return b'Default (unknown) TApplicationException'
 
   def read(self, iprot):
     iprot.readStructBegin()
@@ -144,13 +144,13 @@ class TApplicationException(TException):
     iprot.readStructEnd()
 
   def write(self, oprot):
-    oprot.writeStructBegin('TApplicationException')
+    oprot.writeStructBegin(b'TApplicationException')
     if self.message is not None:
-      oprot.writeFieldBegin('message', TType.STRING, 1)
+      oprot.writeFieldBegin(b'message', TType.STRING, 1)
       oprot.writeString(self.message)
       oprot.writeFieldEnd()
     if self.type is not None:
-      oprot.writeFieldBegin('type', TType.I32, 2)
+      oprot.writeFieldBegin(b'type', TType.I32, 2)
       oprot.writeI32(self.type)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()

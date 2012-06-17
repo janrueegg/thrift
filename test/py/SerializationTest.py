@@ -335,7 +335,7 @@ class SerializersTest(unittest.TestCase):
     self.assertEquals(obj, objcopy)
     
     # test enums
-    for num, name in Numberz._VALUES_TO_NAMES.iteritems():
+    for num, name in Numberz._VALUES_TO_NAMES.items():
       obj = Bonk(message='enum Numberz value %d is string %s' % (num, name), type=num)
       objcopy = Bonk()
       deserialize(objcopy, serialize(obj))
