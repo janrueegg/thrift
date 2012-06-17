@@ -286,7 +286,7 @@ class AcceleratedFramedTest(unittest.TestCase):
     play nicely together when a read spans a frame"""
 
     protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
-    bigstring = "".join(chr(byte) for byte in range(ord("a"), ord("z")+1))
+    bigstring = bytearray(range(ord(b'a'), ord(b'z')+1))
 
     databuf = TTransport.TMemoryBuffer()
     prot = protocol_factory.getProtocol(databuf)
@@ -294,7 +294,7 @@ class AcceleratedFramedTest(unittest.TestCase):
     prot.writeString(bigstring)
     prot.writeI16(24)
     data = databuf.getvalue()
-    cutpoint = len(data)/2
+    cutpoint = len(data)//2
     parts = [ data[:cutpoint], data[cutpoint:] ]
 
     framed_buffer = TTransport.TMemoryBuffer()

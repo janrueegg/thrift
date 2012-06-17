@@ -53,7 +53,7 @@ def fromZigZag(n):
 
 
 def writeVarint(trans, n):
-  out = []
+  out = bytearray([])
   while True:
     if n & ~0x7f == 0:
       out.append(n)
@@ -61,7 +61,7 @@ def writeVarint(trans, n):
     else:
       out.append((n & 0xff) | 0x80)
       n = n >> 7
-  trans.write(''.join(map(chr, out)))
+  trans.write(out)
 
 
 def readVarint(trans):
@@ -253,8 +253,13 @@ class TCompactProtocol(TProtocolBase):
     self.trans.write(pack('!d', dub))
 
   def __writeString(self, s):
-    self.__writeSize(len(s))
-    self.trans.write(s)
+    try:
+      self.__writeSize(len(s))
+      self.trans.write(s)
+    except TypeError as t:
+      # Single "bytes" are treated as integers in Python 3
+      self.__writeSize(1)
+      self.__writeByte(s)
   writeString = writer(__writeString)
 
   def readFieldBegin(self):
