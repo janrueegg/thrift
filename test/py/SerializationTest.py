@@ -154,7 +154,7 @@ class AbstractTest(unittest.TestCase):
                                             set([-1, 0, 1])
                                             ],
                                             # note, the sets below are sets of chars, since the strings are iterated
-                                            map_int_strset={ 10:set(b'abc'), 20:set(b'def'), 30:set(b'GHI') },
+                                            map_int_strset={ 10:set([b'abc', b'xyz']), 20:set(b'def'), 30:set(b'GHI') },
                                             map_int_strset_list=[
                                                                  { 10:set(b'abc'), 20:set(b'def'), 30:set(b'GHI') },
                                                                  { 100:set(b'lmn'), 200:set(b'opq'), 300:set(b'RST') },

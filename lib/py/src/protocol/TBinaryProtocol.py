@@ -119,8 +119,13 @@ class TBinaryProtocol(TProtocolBase):
     self.trans.write(buff)
 
   def writeString(self, str):
-    self.writeI32(len(str))
-    self.trans.write(str)
+    try:
+      self.writeI32(len(str))
+      self.trans.write(str)
+    except TypeError as t:
+      # Single "bytes" are treated as integers in Python 3
+      self.writeI32(1)
+      self.writeByte(str)
 
   def readMessageBegin(self):
     sz = self.readI32()
