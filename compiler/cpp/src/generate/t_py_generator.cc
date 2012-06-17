@@ -349,7 +349,7 @@ void t_py_generator::init_generator() {
   f_consts_ <<
     py_autogen_comment() << endl <<
     py_imports() << endl <<
-    "from ttypes import *" << endl <<
+    "from .ttypes import *" << endl <<
     endl;
 }
 
@@ -767,7 +767,7 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
     out <<
       indent() << "def __repr__(self):" << endl <<
       indent() << "  L = ['%s=%r' % (key, value)" << endl <<
-      indent() << "    for key, value in self.__dict__.iteritems()]" << endl <<
+      indent() << "    for key, value in list(self.__dict__.items())]" << endl <<
       indent() << "  return '%s(%s)' % (self.__class__.__name__, ', '.join(L))" << endl <<
       endl;
 
@@ -1010,7 +1010,7 @@ void t_py_generator::generate_service(t_service* tservice) {
   }
 
   f_service_ <<
-    "from ttypes import *" << endl <<
+    "from .ttypes import *" << endl <<
     "from thrift.Thrift import TProcessor" << endl <<
     render_fastbinary_includes() << endl;
 
@@ -1424,7 +1424,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
 
   f_remote <<
     "import " << service_name_ << endl <<
-    "from ttypes import *" << endl <<
+    "from .ttypes import *" << endl <<
     endl;
 
   f_remote <<
@@ -2000,7 +2000,7 @@ void t_py_generator::generate_deserialize_container(ofstream &out,
   // For loop iterates over elements
   string i = tmp("_i");
   indent(out) <<
-    "for " << i << " in xrange(" << size << "):" << endl;
+    "for " << i << " in range(" << size << "):" << endl;
 
     indent_up();
 
@@ -2192,7 +2192,7 @@ void t_py_generator::generate_serialize_container(ofstream &out,
     string kiter = tmp("kiter");
     string viter = tmp("viter");
     indent(out) <<
-      "for " << kiter << "," << viter << " in " << prefix << ".items():" << endl;
+      "for " << kiter << "," << viter << " in list(" << prefix << ".items()):" << endl;
     indent_up();
     generate_serialize_map_element(out, (t_map*)ttype, kiter, viter);
     indent_down();
