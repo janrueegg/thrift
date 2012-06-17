@@ -225,7 +225,11 @@ class TBinaryProtocol(TProtocolBase):
   def readString(self):
     len = self.readI32()
     str = self.trans.readAll(len)
-    return str
+    if len == 1:
+      # cf. writeString & Python 3 behavior... it's odd
+      return ord(str)
+    else:
+      return str
 
 
 class TBinaryProtocolFactory:

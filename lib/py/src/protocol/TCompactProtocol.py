@@ -393,7 +393,10 @@ class TCompactProtocol(TProtocolBase):
 
   def __readString(self):
     len = self.__readSize()
-    return self.trans.readAll(len)
+    if len == 1:
+      return ord(self.trans.readAll(len))
+    else:
+      return self.trans.readAll(len)
   readString = reader(__readString)
 
   def __getTType(self, byte):
