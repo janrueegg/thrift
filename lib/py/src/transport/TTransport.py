@@ -139,7 +139,7 @@ class TBufferedTransport(TTransportBase, CReadableTransport):
   def __init__(self, trans, rbuf_size=DEFAULT_BUFFER):
     self.__trans = trans
     self.__wbuf = BytesIO()
-    self.__rbuf = BytesIO("")
+    self.__rbuf = BytesIO(b"")
     self.__rbuf_size = rbuf_size
 
   def isOpen(self):

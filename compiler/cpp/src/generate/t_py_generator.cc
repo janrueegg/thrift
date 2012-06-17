@@ -1257,11 +1257,11 @@ void t_py_generator::generate_service_client(t_service* tservice) {
       f_service_ <<
         indent() << "oprot = self._oprot_factory.getProtocol(self._transport)" << endl <<
         indent() <<
-          "oprot.writeMessageBegin('" << (*f_iter)->get_name() << "', TMessageType.CALL, self._seqid)"
+          "oprot.writeMessageBegin(b'" << (*f_iter)->get_name() << "', TMessageType.CALL, self._seqid)"
         << endl;
     } else {
       f_service_ <<
-        indent() << "self._oprot.writeMessageBegin('" << (*f_iter)->get_name() << "', TMessageType.CALL, self._seqid)" << endl;
+        indent() << "self._oprot.writeMessageBegin(b'" << (*f_iter)->get_name() << "', TMessageType.CALL, self._seqid)" << endl;
     }
 
     f_service_ <<
@@ -1635,7 +1635,9 @@ void t_py_generator::generate_service_server(t_service* tservice) {
   indent_up();
 
   f_service_ <<
-    indent() << "(name, type, seqid) = iprot.readMessageBegin()" << endl;
+    indent() << "(asciiName, type, seqid) = iprot.readMessageBegin()" << endl;
+  f_service_ <<
+    indent() << "name = asciiName.decode('ascii')" << endl;
 
   // TODO(mcslee): validate message
 
@@ -1645,7 +1647,7 @@ void t_py_generator::generate_service_server(t_service* tservice) {
     indent() << "  iprot.skip(TType.STRUCT)" << endl <<
     indent() << "  iprot.readMessageEnd()" << endl <<
     indent() << "  x = TApplicationException(TApplicationException.UNKNOWN_METHOD, 'Unknown function %s' % (name))" << endl <<
-    indent() << "  oprot.writeMessageBegin(name, TMessageType.EXCEPTION, seqid)" << endl <<
+    indent() << "  oprot.writeMessageBegin(asciiName, TMessageType.EXCEPTION, seqid)" << endl <<
     indent() << "  x.write(oprot)" << endl <<
     indent() << "  oprot.writeMessageEnd()" << endl <<
     indent() << "  oprot.trans.flush()" << endl;
@@ -1770,7 +1772,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
     indent_up();
     f_service_ <<
       indent() << "result.success = success" << endl <<
-      indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name() <<
+      indent() << "oprot.writeMessageBegin(b\"" << tfunction->get_name() <<
         "\", TMessageType.REPLY, seqid)" << endl <<
       indent() << "result.write(oprot)" << endl <<
       indent() << "oprot.writeMessageEnd()" << endl <<
@@ -1804,7 +1806,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
         }
       }
       f_service_ <<
-        indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name() <<
+        indent() << "oprot.writeMessageBegin(b\"" << tfunction->get_name() <<
           "\", TMessageType.REPLY, seqid)" << endl <<
         indent() << "result.write(oprot)" << endl <<
         indent() << "oprot.writeMessageEnd()" << endl <<
@@ -1870,7 +1872,7 @@ void t_py_generator::generate_process_function(t_service* tservice,
     }
 
     f_service_ <<
-      indent() << "oprot.writeMessageBegin(\"" << tfunction->get_name() << "\", TMessageType.REPLY, seqid)" << endl <<
+      indent() << "oprot.writeMessageBegin(b\"" << tfunction->get_name() << "\", TMessageType.REPLY, seqid)" << endl <<
       indent() << "result.write(oprot)" << endl <<
       indent() << "oprot.writeMessageEnd()" << endl <<
       indent() << "oprot.trans.flush()" << endl;

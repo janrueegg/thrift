@@ -20,7 +20,8 @@
 #
 
 import sys, glob, time
-sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+#sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+sys.path.insert(0, '../../lib/py/build/lib')
 from optparse import OptionParser
 
 parser = OptionParser()

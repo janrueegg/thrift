@@ -20,7 +20,8 @@
 #
 
 import sys, glob
-sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+#sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+sys.path.insert(0, '../../lib/py/build/lib')
 
 import unittest
 import time
@@ -93,8 +94,8 @@ class AbstractTest(unittest.TestCase):
     self.client.testVoid()
 
   def testString(self):
-    self.assertEqual(self.client.testString('Python' * 20), 'Python' * 20)
-    self.assertEqual(self.client.testString(''), '')
+    self.assertEqual(self.client.testString(b'Python' * 20), b'Python' * 20)
+    self.assertEqual(self.client.testString(b''), b'')
 
   def testByte(self):
     self.assertEqual(self.client.testByte(63), 63)
@@ -115,7 +116,7 @@ class AbstractTest(unittest.TestCase):
 
   def testStruct(self):
     x = Xtruct()
-    x.string_thing = "Zero"
+    x.string_thing = b"Zero"
     x.byte_thing = 1
     x.i32_thing = -3
     x.i64_thing = -5
@@ -123,7 +124,7 @@ class AbstractTest(unittest.TestCase):
     self.assertEqual(y, x)
 
   def testNest(self):
-    inner = Xtruct(string_thing="Zero", byte_thing=1, i32_thing=-3,
+    inner = Xtruct(string_thing=b"Zero", byte_thing=1, i32_thing=-3,
       i64_thing=-5)
     x = Xtruct2(struct_thing=inner)
     y = self.client.testNest(x)
@@ -167,7 +168,7 @@ class AbstractTest(unittest.TestCase):
     y = self.client.testMulti(xpected.byte_thing,
           xpected.i32_thing,
           xpected.i64_thing,
-          { 0:'abc' },
+          { 0:b'abc' },
           Numberz.FIVE,
           0xf0f0f0)
     self.assertEqual(y, xpected)
@@ -200,7 +201,7 @@ class AbstractTest(unittest.TestCase):
   
   def testOnewayThenNormal(self):
     self.client.testOneway(1) # type is int, not float
-    self.assertEqual(self.client.testString('Python'), 'Python')
+    self.assertEqual(self.client.testString(b'Python'), b'Python')
 
 class NormalBinaryTest(AbstractTest):
   protocol_factory = TBinaryProtocol.TBinaryProtocolFactory()
