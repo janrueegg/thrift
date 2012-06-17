@@ -26,7 +26,8 @@ parser.add_option('--genpydir', type='string', dest='genpydir', default='gen-py'
 options, args = parser.parse_args()
 del sys.argv[1:] # clean up hack so unittest doesn't complain
 sys.path.insert(0, options.genpydir)
-sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+#sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+sys.path.insert(0, '../../lib/py/build/lib')
 
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import *
@@ -47,13 +48,13 @@ class TestEof(unittest.TestCase):
       prot = TBinaryProtocol.TBinaryProtocol(trans)
 
     x = Xtruct()
-    x.string_thing = "Zero"
+    x.string_thing = b"Zero"
     x.byte_thing = 0
 
     x.write(prot)
 
     x = Xtruct()
-    x.string_thing = "One"
+    x.string_thing = b"One"
     x.byte_thing = 1
 
     x.write(prot)
@@ -78,12 +79,12 @@ class TestEof(unittest.TestCase):
 
     x = Xtruct()
     x.read(prot)
-    self.assertEqual(x.string_thing, "Zero")
+    self.assertEqual(x.string_thing, b"Zero")
     self.assertEqual(x.byte_thing, 0)
 
     x = Xtruct()
     x.read(prot)
-    self.assertEqual(x.string_thing, "One")
+    self.assertEqual(x.string_thing, b"One")
     self.assertEqual(x.byte_thing, 1)
 
     try:

@@ -316,7 +316,7 @@ class SerializersTest(unittest.TestCase):
 
   def testSerializeThenDeserialize(self):
     obj = Xtruct2(i32_thing=1,
-                  struct_thing=Xtruct(string_thing="foo"))
+                  struct_thing=Xtruct(string_thing=b"foo"))
 
     s1 = serialize(obj)
     for i in range(10):
@@ -325,7 +325,7 @@ class SerializersTest(unittest.TestCase):
       deserialize(objcopy, serialize(obj))
       self.assertEquals(obj, objcopy)
 
-    obj = Xtruct(string_thing="bar")
+    obj = Xtruct(string_thing=b"bar")
     objcopy = Xtruct()
     deserialize(objcopy, serialize(obj))
     self.assertEquals(obj, objcopy)
@@ -338,11 +338,12 @@ class SerializersTest(unittest.TestCase):
     
     # test enums
     for num, name in Numberz._VALUES_TO_NAMES.items():
-      obj = Bonk(message='enum Numberz value %d is string %s' % (num, name), type=num)
+      message='enum Numberz value %d is string %s' % (num, name)
+      obj = Bonk(message.encode('ascii'), type=num)
       objcopy = Bonk()
       deserialize(objcopy, serialize(obj))
       self.assertEquals(obj, objcopy)
-  
+
 
 def suite():
   suite = unittest.TestSuite()
