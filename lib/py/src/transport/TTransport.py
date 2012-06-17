@@ -17,7 +17,7 @@
 # under the License.
 #
 
-from io import StringIO
+from io import BytesIO
 from struct import pack, unpack
 from thrift.Thrift import TException
 
@@ -52,7 +52,7 @@ class TTransportBase:
     pass
 
   def readAll(self, sz):
-    buff = ''
+    buff = b''
     have = 0
     while (have < sz):
       chunk = self.read(sz - have)
@@ -203,9 +203,9 @@ class TMemoryBuffer(TTransportBase, CReadableTransport):
     If value is set, this will be a transport for reading,
     otherwise, it is for writing"""
     if value is not None:
-      self._buffer = StringIO(value)
+      self._buffer = BytesIO(value)
     else:
-      self._buffer = StringIO()
+      self._buffer = BytesIO()
 
   def isOpen(self):
     return not self._buffer.closed

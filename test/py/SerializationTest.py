@@ -1,3 +1,4 @@
+#!/Users/werner/stuff/dacuda/python3/bin/python3
 #!/usr/bin/env python
 
 #
@@ -26,7 +27,8 @@ parser.add_option('--genpydir', type='string', dest='genpydir', default='gen-py'
 options, args = parser.parse_args()
 del sys.argv[1:] # clean up hack so unittest doesn't complain
 sys.path.insert(0, options.genpydir)
-sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+#sys.path.insert(0, glob.glob('../../lib/py/build/lib.*')[0])
+sys.path.insert(0, '../../lib/py/build/lib')
 
 from ThriftTest.ttypes import *
 from DebugProtoTest.ttypes import CompactProtoTestStruct, Empty
@@ -42,7 +44,7 @@ class AbstractTest(unittest.TestCase):
   def setUp(self):
       self.v1obj = VersioningTestV1(
           begin_in_both=12345,
-          old_string='aaa',
+          old_string=b'aaa',
           end_in_both=54321,
           )
 
@@ -53,11 +55,11 @@ class AbstractTest(unittest.TestCase):
           newshort=3,
           newlong=4,
           newdouble=5.0,
-          newstruct=Bonk(message="Hello!", type=123),
+          newstruct=Bonk(message=b"Hello!", type=123),
           newlist=[7,8,9],
           newset=set([42,1,8]),
           newmap={1:2,2:3},
-          newstring="Hola!",
+          newstring=b"Hola!",
           end_in_both=54321,
           )
 
@@ -71,8 +73,8 @@ class AbstractTest(unittest.TestCase):
           check_true=True,
           b1000=self.bools_flipped,
           check_false=False,
-          vertwo2000=VersioningTestV2(newstruct=Bonk(message='World!', type=314)),
-          a_set2500=set(['lazy', 'brown', 'cow']),
+          vertwo2000=VersioningTestV2(newstruct=Bonk(message=b'World!', type=314)),
+          a_set2500=set([b'lazy', b'brown', b'cow']),
           vertwo3000=VersioningTestV2(newset=set([2, 3, 5, 7, 11])),
           big_numbers=[2**8, 2**16, 2**31-1, -(2**31-1)]
           )
@@ -83,7 +85,7 @@ class AbstractTest(unittest.TestCase):
           a_i32=1000000000,
           a_i64=0xffffffffff,
           a_double=5.6789,
-          a_string="my string",
+          a_string=b"my string",
           true_field=True,
           false_field=False,
           empty_struct_field=Empty(),
@@ -92,7 +94,7 @@ class AbstractTest(unittest.TestCase):
           i32_list= [-1, 0, 0xff, 0xffff, 0xffffff, 0x7fffffff],
           i64_list=[-1, 0, 0xff, 0xffff, 0xffffff, 0xffffffff, 0xffffffffff, 0xffffffffffff, 0xffffffffffffff, 0x7fffffffffffffff],
           double_list=[0.1, 0.2, 0.3],
-          string_list=["first", "second", "third"],
+          string_list=[b"first", b"second", b"third"],
           boolean_list=[True, True, True, False, False, False],
           struct_list=[Empty(), Empty()],
           byte_set=set([-127, -1, 0, 1, 127]),
@@ -100,7 +102,7 @@ class AbstractTest(unittest.TestCase):
           i32_set=set([1, 2, 3]),
           i64_set=set([-1, 0, 0xff, 0xffff, 0xffffff, 0xffffffff, 0xffffffffff, 0xffffffffffff, 0xffffffffffffff, 0x7fffffffffffffff]),
           double_set=set([0.1, 0.2, 0.3]),
-          string_set=set(["first", "second", "third"]),
+          string_set=set([b"first", b"second", b"third"]),
           boolean_set=set([True, False]),
           #struct_set=set([Empty()]), # unhashable instance
           byte_byte_map={1 : 2},
@@ -108,13 +110,13 @@ class AbstractTest(unittest.TestCase):
           i32_byte_map={1 : 1, -1 : 1, 0x7fffffff : 1},
           i64_byte_map={0 : 1,  1 : 1, -1 : 1, 0x7fffffffffffffff : 1},
           double_byte_map={-1.1 : 1, 1.1 : 1},
-          string_byte_map={"first" : 1, "second" : 2, "third" : 3, "" : 0},
+          string_byte_map={b"first" : 1, b"second" : 2, b"third" : 3, b"" : 0},
           boolean_byte_map={True : 1, False: 0},
           byte_i16_map={1 : 1, 2 : -1, 3 : 0x7fff},
           byte_i32_map={1 : 1, 2 : -1, 3 : 0x7fffffff},
           byte_i64_map={1 : 1, 2 : -1, 3 : 0x7fffffffffffffff},
           byte_double_map={1 : 0.1, 2 : -0.1, 3 : 1000000.1},
-          byte_string_map={1 : "", 2 : "blah", 3 : "loooooooooooooong string"},
+          byte_string_map={1 : b"", 2 : b"blah", 3 : b"loooooooooooooong string"},
           byte_boolean_map={1 : True, 2 : False},
           #list_byte_map # unhashable
           #set_byte_map={set([1, 2, 3]) : 1, set([0, 1]) : 2, set([]) : 0}, # unhashable
@@ -152,11 +154,11 @@ class AbstractTest(unittest.TestCase):
                                             set([-1, 0, 1])
                                             ],
                                             # note, the sets below are sets of chars, since the strings are iterated
-                                            map_int_strset={ 10:set('abc'), 20:set('def'), 30:set('GHI') },
+                                            map_int_strset={ 10:set(b'abc'), 20:set(b'def'), 30:set(b'GHI') },
                                             map_int_strset_list=[
-                                                                 { 10:set('abc'), 20:set('def'), 30:set('GHI') },
-                                                                 { 100:set('lmn'), 200:set('opq'), 300:set('RST') },
-                                                                 { 1000:set('uvw'), 2000:set('wxy'), 3000:set('XYZ') }
+                                                                 { 10:set(b'abc'), 20:set(b'def'), 30:set(b'GHI') },
+                                                                 { 100:set(b'lmn'), 200:set(b'opq'), 300:set(b'RST') },
+                                                                 { 1000:set(b'uvw'), 2000:set(b'wxy'), 3000:set(b'XYZ') }
                                                                  ]
                                           )
 
@@ -164,12 +166,12 @@ class AbstractTest(unittest.TestCase):
                                               [
                                                 [
                                                   [
-                                                    Bonk(message='inner A first', type=1),
-                                                    Bonk(message='inner A second', type=1)
+                                                    Bonk(message=b'inner A first', type=1),
+                                                    Bonk(message=b'inner A second', type=1)
                                                   ],
                                                   [
-                                                  Bonk(message='inner B first', type=2),
-                                                  Bonk(message='inner B second', type=2)
+                                                  Bonk(message=b'inner B first', type=2),
+                                                  Bonk(message=b'inner B second', type=2)
                                                   ]
                                                 ]
                                               ]
@@ -177,9 +179,9 @@ class AbstractTest(unittest.TestCase):
 
       self.list_bonks = ListBonks(
                                     [
-                                      Bonk(message='inner A', type=1),
-                                      Bonk(message='inner B', type=2),
-                                      Bonk(message='inner C', type=0)
+                                      Bonk(message=b'inner A', type=1),
+                                      Bonk(message=b'inner B', type=2),
+                                      Bonk(message=b'inner C', type=0)
                                     ]
                                   )
 

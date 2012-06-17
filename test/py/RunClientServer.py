@@ -1,3 +1,4 @@
+#!/Users/werner/stuff/dacuda/python3/bin/python3
 #!/usr/bin/env python
 
 #
@@ -52,10 +53,7 @@ SKIP_ZLIB = ['TNonblockingServer', 'THttpServer']
 SKIP_SSL = ['TNonblockingServer', 'THttpServer']
 EXTRA_DELAY = dict(TProcessPoolServer=3.5)
 
-PROTOS= [
-    'accel',
-    'binary',
-    'compact' ]
+PROTOS= ['binary']
 
 SERVERS = [
   "TSimpleServer",
