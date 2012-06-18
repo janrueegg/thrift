@@ -102,7 +102,7 @@ class Connection:
         self.socket.setblocking(False)
         self.status = WAIT_LEN
         self.len = 0
-        self.message = ''
+        self.message = b''
         self.lock = threading.Lock()
         self.wake_up = wake_up
 
@@ -130,7 +130,7 @@ class Connection:
                 logging.error("empty frame, it's really strange")
                 self.close()
             else:
-                self.message = ''
+                self.message = b''
                 self.status = WAIT_MESSAGE
 
     @socket_exception
@@ -160,7 +160,7 @@ class Connection:
         sent = self.socket.send(self.message)
         if sent == len(self.message):
             self.status = WAIT_LEN
-            self.message = ''
+            self.message = b''
             self.len = 0
         else:
             self.message = self.message[sent:]
@@ -186,7 +186,7 @@ class Connection:
         self.len = ''
         if len(message) == 0:
             # it was a oneway request, do not write answer
-            self.message = ''
+            self.message = b''
             self.status = WAIT_LEN
         else:
             self.message = struct.pack('!i', len(message)) + message
@@ -267,7 +267,7 @@ class TNonblockingServer:
         In this case, we can just write anything to the second socket from
         socketpair.
         """
-        self._write.send('1')
+        self._write.send(b'1')
 
     def stop(self):
         """Stop the server.

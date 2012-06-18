@@ -64,15 +64,16 @@ class THttpClient(TTransportBase):
       if parsed.query:
         self.path += '?%s' % parsed.query
     self.__wbuf = BytesIO()
+    self.__rbuf = BytesIO()
     self.__http = None
     self.__timeout = None
     self.__custom_headers = None
 
   def open(self):
     if self.scheme == 'http':
-      self.__http = http.client.HTTP(self.host, self.port)
+      self.__http = http.client.HTTPConnection(self.host, self.port)
     else:
-      self.__http = http.client.HTTPS(self.host, self.port)
+      self.__http = http.client.HTTPSConnection(self.host, self.port)
 
   def close(self):
     self.__http.close()
@@ -94,7 +95,7 @@ class THttpClient(TTransportBase):
     self.__custom_headers = headers
 
   def read(self, sz):
-    return self.__http.file.read(sz)
+    return self.__rbuf.read(sz)
 
   def write(self, buf):
     self.__wbuf.write(buf)
@@ -142,7 +143,12 @@ class THttpClient(TTransportBase):
     self.__http.send(data)
 
     # Get reply to flush the request
-    self.code, self.message, self.headers = self.__http.getreply()
+    #self.code, self.message, self.headers = self.__http.getreply()
+    response = self.__http.getresponse()
+    self.code = response.status
+    self.message = response.msg
+    self.headers = response.getheaders()
+    self.__rbuf = BytesIO(response.read())
 
   # Decorate if we know how to timeout
   if hasattr(socket, 'getdefaulttimeout'):
