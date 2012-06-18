@@ -104,12 +104,12 @@ class TestHandler:
   def testException(self, str):
     if options.verbose > 1:
       print('testException(%s)' % str)
-    if str == 'Xception':
+    if str == b'Xception':
       x = Xception()
       x.errorCode = 1001
       x.message = str
       raise x
-    elif str == "throw_undeclared":
+    elif str == b"throw_undeclared":
       raise ValueError("Exception test PASSES.")
 
   def testOneway(self, seconds):

@@ -27,7 +27,7 @@ except:
   fastbinary = None
 
 
-class TBase(object):
+class TBase(Exception):
   __slots__ = []
 
   def __repr__(self):

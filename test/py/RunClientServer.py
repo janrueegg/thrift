@@ -1,5 +1,4 @@
-#!/Users/werner/stuff/dacuda/python3/bin/python3
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # Licensed to the Apache Software Foundation (ASF) under one

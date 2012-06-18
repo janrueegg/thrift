@@ -930,7 +930,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
   indent_down();
 
   indent(out) <<
-    "oprot.writeStructBegin('" << name << "')" << endl;
+    "oprot.writeStructBegin(b'" << name << "')" << endl;
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     // Write field header
@@ -939,7 +939,7 @@ void t_py_generator::generate_py_struct_writer(ofstream& out,
     indent_up();
     indent(out) <<
       "oprot.writeFieldBegin(" <<
-      "'" << (*f_iter)->get_name() << "', " <<
+      "b'" << (*f_iter)->get_name() << "', " <<
       type_to_enum((*f_iter)->get_type()) << ", " <<
       (*f_iter)->get_key() << ")" << endl;
 
