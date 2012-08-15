@@ -126,7 +126,11 @@ if test "$with_cpp" = "yes";  then
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success
   
-  PKG_CHECK_MODULES([QT], [QtCore >= 4.3, QtNetwork >= 4.3], have_qt=yes, have_qt=no)
+  AX_THRIFT_LIB(qt4, [Qt], yes)
+  have_qt=no
+  if test "$with_qt4" = "yes";  then
+    PKG_CHECK_MODULES([QT], [QtCore >= 4.3, QtNetwork >= 4.3], have_qt=yes, have_qt=no)
+  fi
   if test "$have_qt" = "yes"; then
     AC_PATH_PROGS([QT_MOC], [moc-qt4 moc])
     have_qt=$success
@@ -574,6 +578,7 @@ AC_CONFIG_FILES([
   Makefile
   compiler/cpp/Makefile
   compiler/cpp/version.h
+  compiler/cpp/src/windows/version.h
   lib/Makefile
   lib/cpp/Makefile
   lib/cpp/test/Makefile
@@ -614,8 +619,6 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Building code generators ..... : $thrift_generators"
-echo
 echo "Building C++ Library ......... : $have_cpp"
 echo "Building C (GLib) Library .... : $have_c_glib"
 echo "Building Java Library ........ : $have_java"
@@ -628,6 +631,7 @@ echo "Building PHP Library ......... : $have_php"
 echo "Building Erlang Library ...... : $have_erlang"
 echo "Building Go Library .......... : $have_go"
 echo "Building D Library ........... : $have_d"
+
 if test "$have_cpp" = "yes" ; then
   echo
   echo "C++ Library:"
